@@ -24,5 +24,6 @@
   </dependencies>
   <modules>
     <module>user-defined-packing</module>
+    <module>lifecycleaware-loader</module>
   </modules>
 </project>
