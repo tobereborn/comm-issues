@@ -13,16 +13,82 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jackson.version>1.9.2</jackson.version>
+		<jsonassert.version>1.2.3</jsonassert.version>		
+		<slf4j.version>1.7.5</slf4j.version>
+		<log4j.version>1.2.17</log4j.version>
+		<powermock.version>1.4.9</powermock.version>
+		<junit.version>4.12</junit.version>
+		<dbunit.version>2.4.7</dbunit.version>
+		<mockito.version>1.8.5</mockito.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- json BEGIN -->
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-mapper-asl</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<!-- json END -->
+			<!-- logging BEGIN -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<!-- logging END -->
+			<!-- test BEGIN -->
+			<dependency>
+				<groupId>org.skyscreamer</groupId>
+				<artifactId>jsonassert</artifactId>
+				<version>${jsonassert.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.dbunit</groupId>
+				<artifactId>dbunit</artifactId>
+				<version>${dbunit.version}</version>
+				<scope>test</scope>
+			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.12</version>
+				<version>${junit.version}</version>
 				<scope>test</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-all</artifactId>
+				<version>${mockito.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<!-- for mock static method,usage: http://code.google.com/p/powermock/wiki/MockStatic -->
+			<dependency>
+				<groupId>org.powermock</groupId>
+				<artifactId>powermock-module-junit4</artifactId>
+				<version>${powermock.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.powermock</groupId>
+				<artifactId>powermock-api-mockito</artifactId>
+				<version>${powermock.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<!-- test END -->
 		</dependencies>
 	</dependencyManagement>
 
@@ -194,5 +260,6 @@
 	<modules>
 		<module>user-defined-packing</module>
 		<module>lifecycleaware-loader</module>
+		<module>json-handler</module>
 	</modules>
 </project>
