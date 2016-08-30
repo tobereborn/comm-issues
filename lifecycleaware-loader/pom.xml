@@ -7,9 +7,7 @@
     <artifactId>java-common</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <groupId>com.github.tbr.common</groupId>
   <artifactId>lifecycleaware-loader</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <name>lifecycleaware-loader</name>
   <url>http://maven.apache.org</url>
   <properties>
@@ -19,7 +17,6 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
