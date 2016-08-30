@@ -1,2 +1,2 @@
-# comm-issues
-Common issues for Java project development
+# java-common
+Common practices for Java project development
