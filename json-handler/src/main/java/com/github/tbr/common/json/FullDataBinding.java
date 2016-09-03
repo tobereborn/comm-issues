@@ -13,14 +13,17 @@ import org.codehaus.jackson.map.SerializationConfig;
  * class type.
  */
 public final class FullDataBinding {
-	private ObjectMapper mapper;
+	private static ObjectMapper mapper;
 
-	public FullDataBinding() {
-		this.mapper = new ObjectMapper();
-		this.mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
+	static {
+		mapper = new ObjectMapper();
+		mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
 	}
 
-	public SimplePojo readValue(String json) {
+	private FullDataBinding() {
+	}
+
+	public static SimplePojo readValue(String json) {
 		try {
 			return mapper.readValue(json, SimplePojo.class);
 		} catch (JsonParseException e) {
@@ -32,7 +35,7 @@ public final class FullDataBinding {
 		}
 	}
 
-	public String writeValue(SimplePojo pojo) {
+	public static String writeValue(SimplePojo pojo) {
 		try {
 			return mapper.writeValueAsString(pojo);
 		} catch (JsonGenerationException e) {
@@ -45,15 +48,14 @@ public final class FullDataBinding {
 	}
 
 	public static void main(String[] args) {
-		FullDataBinding sdb = new FullDataBinding();
 		SimplePojo pojo = new SimplePojo();
 		pojo.setStrField("simple");
 		pojo.setIntField(1);
 		pojo.setBooleanField(true);
 		pojo.setIntArray(new int[] { 1, 2, 3 });
-		String json = sdb.writeValue(pojo);
+		String json = FullDataBinding.writeValue(pojo);
 		System.out.println(json);
-		SimplePojo decPojo = sdb.readValue(json);
+		SimplePojo decPojo = FullDataBinding.readValue(json);
 		System.out.println(decPojo);
 	}
 }

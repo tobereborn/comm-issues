@@ -15,15 +15,18 @@ import org.codehaus.jackson.map.SerializationConfig;
  * means of map.
  */
 public final class SimpleDataBinding {
-	private ObjectMapper mapper;
+	private static ObjectMapper mapper;
 
-	public SimpleDataBinding() {
-		this.mapper = new ObjectMapper();
-		this.mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
+	static {
+		mapper = new ObjectMapper();
+		mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
+	}
+
+	private SimpleDataBinding() {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> readValue(String json) {
+	public static Map<String, Object> readValue(String json) {
 		try {
 			return mapper.readValue(json, Map.class);
 		} catch (JsonParseException e) {
@@ -35,7 +38,7 @@ public final class SimpleDataBinding {
 		}
 	}
 
-	public String writeValue(Map<String, Object> map) {
+	public static String writeValue(Map<String, Object> map) {
 		try {
 			return mapper.writeValueAsString(map);
 		} catch (JsonGenerationException e) {
@@ -48,7 +51,6 @@ public final class SimpleDataBinding {
 	}
 
 	public static void main(String[] args) {
-		SimpleDataBinding sdb = new SimpleDataBinding();
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		SimplePojo pojo = new SimplePojo();
 		pojo.setStrField("simple");
@@ -60,9 +62,9 @@ public final class SimpleDataBinding {
 		map.put("int", 1);
 		map.put("boolean", true);
 		map.put("array", new int[] { 1, 2, 3 });
-		String json = sdb.writeValue(map);
+		String json = SimpleDataBinding.writeValue(map);
 		System.out.println(json);
-		Map<String, Object> decMap = sdb.readValue(json);
+		Map<String, Object> decMap = SimpleDataBinding.readValue(json);
 		System.out.println(decMap);
 	}
 }

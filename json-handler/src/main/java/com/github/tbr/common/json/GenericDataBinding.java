@@ -14,17 +14,21 @@ import org.codehaus.jackson.type.TypeReference;
  * type reference.
  */
 public final class GenericDataBinding {
-	private ObjectMapper mapper;
-	private TypeReference<ComplexPojo> ref;
+	private static ObjectMapper mapper;
+	private static TypeReference<ComplexPojo> ref;
 
-	public GenericDataBinding() {
-		this.mapper = new ObjectMapper();
-		this.mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
-		this.ref = new TypeReference<ComplexPojo>() {
+	static {
+		mapper = new ObjectMapper();
+		mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
+		ref = new TypeReference<ComplexPojo>() {
 		};
 	}
 
-	public ComplexPojo readValue(String json) {
+	private GenericDataBinding() {
+
+	};
+
+	public static ComplexPojo readValue(String json) {
 		try {
 			return mapper.readValue(json, ref);
 		} catch (JsonParseException e) {
@@ -36,7 +40,7 @@ public final class GenericDataBinding {
 		}
 	}
 
-	public String writeValue(ComplexPojo pojo) {
+	public static String writeValue(ComplexPojo pojo) {
 		try {
 			return mapper.writeValueAsString(pojo);
 		} catch (JsonGenerationException e) {
@@ -49,7 +53,6 @@ public final class GenericDataBinding {
 	}
 
 	public static void main(String[] args) {
-		GenericDataBinding gdb = new GenericDataBinding();
 		SimplePojo simplePojo = new SimplePojo();
 		simplePojo.setStrField("simple");
 		simplePojo.setIntField(1);
@@ -60,9 +63,9 @@ public final class GenericDataBinding {
 		complexPojo.setIntField(1);
 		complexPojo.setBooleanField(true);
 		complexPojo.setIntArray(new int[] { 1, 2, 3 });
-		String json = gdb.writeValue(complexPojo);
+		String json = GenericDataBinding.writeValue(complexPojo);
 		System.out.println(json);
-		ComplexPojo decPojo = gdb.readValue(json);
+		ComplexPojo decPojo = GenericDataBinding.readValue(json);
 		System.out.println(decPojo);
 	}
 }

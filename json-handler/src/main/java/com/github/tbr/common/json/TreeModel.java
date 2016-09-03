@@ -19,14 +19,17 @@ import org.codehaus.jackson.node.ObjectNode;
  * It is quite similar to DOM parser in XML.
  */
 public class TreeModel {
-	private ObjectMapper mapper;
+	private static ObjectMapper mapper;
 
-	public TreeModel() {
-		this.mapper = new ObjectMapper();
-		this.mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
+	static {
+		mapper = new ObjectMapper();
+		mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
 	}
 
-	public SimplePojo readValue(String json) {
+	private TreeModel() {
+	}
+
+	public static SimplePojo readValue(String json) {
 		JsonNode root = null;
 		try {
 			root = mapper.readTree(json);
@@ -50,17 +53,16 @@ public class TreeModel {
 		while (it.hasNext()) {
 			list.add(it.next().asInt());
 		}
-		Integer[] intArray = list.toArray(new Integer[] {});
-		int[] copy = new int[intArray.length];
-        for(int i=0;i<intArray.length;i++){
-        	copy[i]=intArray[i];
-        }
+		int[] copy = new int[list.size()];
+		for (int i = 0; i < copy.length; i++) {
+			copy[i] = list.get(i);
+		}
 		pojo.setIntArray(copy);
 
 		return pojo;
 	}
 
-	public String writeValue(SimplePojo pojo) {
+	public static String writeValue(SimplePojo pojo) {
 		ObjectNode root = mapper.createObjectNode();
 		ArrayNode arrayNode = mapper.createArrayNode();
 		int[] array = pojo.getIntArray();
@@ -86,15 +88,14 @@ public class TreeModel {
 	}
 
 	public static void main(String[] args) {
-		TreeModel tree = new TreeModel();
 		SimplePojo pojo = new SimplePojo();
 		pojo.setStrField("simple pojo");
 		pojo.setIntField(1);
 		pojo.setIntArray(new int[] { 1, 2, 3 });
 		pojo.setBooleanField(true);
-		String json = tree.writeValue(pojo);
+		String json = TreeModel.writeValue(pojo);
 		System.out.println(json);
-		SimplePojo decPojo = tree.readValue(json);
+		SimplePojo decPojo = TreeModel.readValue(json);
 		System.out.println(decPojo);
 	}
 
